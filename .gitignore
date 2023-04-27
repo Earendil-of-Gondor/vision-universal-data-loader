@@ -1,2 +1,5 @@
 # ignore the data
 /data
+
+# ignore idea
+.idea/
