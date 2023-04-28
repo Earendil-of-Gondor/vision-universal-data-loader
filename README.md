@@ -1,7 +1,7 @@
 # vision-universal-data-loader
-'''
+```
 python ./loader.py --basedir ./scene_folder
-'''
+```
 
 your scene folder should contain an image folder called images or a video.
 
