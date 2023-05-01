@@ -39,7 +39,7 @@ def run_colmap(basedir, match_type):
     exhaustive_matcher_args = [
         'colmap', match_type,
         '--database_path', os.path.join(basedir, 'database.db'),
-        '--SiftMatching.use_gpu', '1'
+        '--SiftMatching.use_gpu', '0'
     ]
 
     match_output = (subprocess.check_output(
