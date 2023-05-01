@@ -64,7 +64,7 @@ def run_colmap(basedir, match_type):
         '--database_path', os.path.join(basedir, 'database.db'),
         '--image_path', os.path.join(basedir, 'images'),
         # --export_path changed to --output_path in colmap 3.6
-        '--output_path', os.path.join(basedir, 'sparse'),
+        '--export_path', os.path.join(basedir, 'sparse'),
         '--Mapper.num_threads', '16',
         '--Mapper.init_min_tri_angle', '4',
         '--Mapper.multiple_models', '0',
