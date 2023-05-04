@@ -1,5 +1,6 @@
 from llff.poses.pose_utils import minify
-import sys
+import os
+import subprocess
 
 import argparse
 parser = argparse.ArgumentParser()
@@ -12,8 +13,26 @@ args = parser.parse_args()
 
 
 def resize(basedir, factors):
-    factors = args.factors.split(',')
-    minify(basedir, factors)
+    # factors = args.factors.split(',')
+
+    # def copy():
+
+    # def resize_helper(factor):
+    #     resize_args = [
+    #         "pushd", f"{basedir}/images_{factor}",
+    #         "ls", "|", ""
+    #     ]
+    #     resize_outputs = (subprocess.check_output(
+    #         resize_args, universal_newlines=True))
+    #     print(resize_outputs)
+
+    resize_args = [
+        "DATASET_PATH={basedir}"
+        "resize.sh",
+    ]
+    resize_outputs = (subprocess.check_output(
+        resize_args, universal_newlines=True))
+    print(resize_outputs)
 
 
 if __name__ == '__main__':
