@@ -14,6 +14,8 @@ def parse_args():
     parser.add_argument("--outdir", default="")
     parser.add_argument("--output_type", default=0,
                         help="0 for nerf; 1 for nerd; 2 for instant-npg")
+    parser.add_argument("--use_gpu", default=0,
+                        help="use gpu or not when running colmap")
 
     parser.add_argument("--video_fps", default=2)
     parser.add_argument("--time_slice", default="", help="Time (in seconds) in the format t1,t2 within which the images should be generated from the video. E.g.: \"--time_slice '10,300'\" will generate images only from 10th second to 300th second of the video.")
@@ -61,4 +63,4 @@ if __name__ == "__main__":
             print('ERROR: no video found. Aborting')
             sys.exit()
 
-    gen_poses(args.basedir, args.match_type)
+    gen_poses(args.basedir, args.match_type, args.use_gpu)

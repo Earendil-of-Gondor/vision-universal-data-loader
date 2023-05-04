@@ -19,8 +19,8 @@ import subprocess
 #     --output_path $DATASET_PATH/sparse
 
 # $ mkdir $DATASET_PATH/dense
-def run_colmap(basedir, match_type):
 
+def run_colmap(basedir, match_type, use_gpu=0):
     logfile_name = os.path.join(basedir, 'colmap_output.txt')
     logfile = open(logfile_name, 'w')
 
@@ -29,7 +29,7 @@ def run_colmap(basedir, match_type):
         '--database_path', os.path.join(basedir, 'database.db'),
         '--image_path', os.path.join(basedir, 'images'),
         '--ImageReader.single_camera', '1',
-        '--SiftExtraction.use_gpu', '0',
+        '--SiftExtraction.use_gpu', use_gpu,
     ]
     feat_output = (subprocess.check_output(
         feature_extractor_args, universal_newlines=True))
@@ -39,7 +39,7 @@ def run_colmap(basedir, match_type):
     exhaustive_matcher_args = [
         'colmap', match_type,
         '--database_path', os.path.join(basedir, 'database.db'),
-        '--SiftMatching.use_gpu', '0'
+        '--SiftMatching.use_gpu', use_gpu
     ]
 
     match_output = (subprocess.check_output(
@@ -68,7 +68,7 @@ def run_colmap(basedir, match_type):
         '--Mapper.num_threads', '16',
         '--Mapper.init_min_tri_angle', '4',
         '--Mapper.multiple_models', '0',
-        '--Mapper.extract_colors', '0',
+        # '--Mapper.extract_colors', '0',
     ]
 
     map_output = (subprocess.check_output(
