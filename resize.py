@@ -27,7 +27,7 @@ def resize(basedir, factors):
     #     print(resize_outputs)
 
     resize_args = [
-        "DATASET_PATH", "=", basedir,
+        # "DATASET_PATH", "=", basedir,
         "resize.sh",
     ]
     resize_outputs = (subprocess.check_output(
