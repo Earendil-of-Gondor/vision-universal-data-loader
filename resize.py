@@ -27,8 +27,7 @@ def resize(basedir, factors):
     #     print(resize_outputs)
 
     resize_args = [
-        # "DATASET_PATH", "=", basedir,
-        "resize.sh",
+        "bash", "resize.sh", basedir
     ]
     resize_outputs = (subprocess.check_output(
         resize_args, universal_newlines=True))
