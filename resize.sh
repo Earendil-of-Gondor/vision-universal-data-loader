@@ -1,7 +1,8 @@
 
 
 cp -r "$DATASET_PATH" "$DATASET_PATH"_2
-
+echo "$DATASET_PATH"
+echo $DATASET_PATH
 pushd "$DATASET_PATH"_2
 ls | xargs -P 8 -I {} mogrify -resize 50% {}
 popd
