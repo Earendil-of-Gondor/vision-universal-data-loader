@@ -58,7 +58,7 @@ def recon(basedir, match_type, run_until=6):
             '--database_path', os.path.join(basedir, 'database.db'),
             '--image_path', os.path.join(basedir, 'images'),
             # --export_path changed to --output_path in colmap 3.6
-            '--export_path', os.path.join(basedir, 'sparse'),
+            '--output_path', os.path.join(basedir, 'sparse'),
             '--Mapper.num_threads', '16',
             '--Mapper.init_min_tri_angle', '4',
             '--Mapper.multiple_models', '0',
