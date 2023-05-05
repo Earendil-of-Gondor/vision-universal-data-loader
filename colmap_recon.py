@@ -15,11 +15,12 @@ parser.add_argument('--run_until', type=int, default=3,
 args = parser.parse_args()
 
 
-def recon(basedir, match_type, run_until=6):
+def recon(basedir, match_type, run_until=6, use_gpu=0):
     '''
     run_until specifies where to stop colmap at. 1 for feature extractor, 2 for matcher,
     3 for sparse mapper, 4 for undistorter, 5 for patch matcher, 6 for fusion, 7 for poisson mesher, 
-    8 for delaunay mesher
+    8 for delaunay mesher.
+    use_gpu indicates whether to use gpu during feature extraction and matcher.
     '''
     logfile_name = os.path.join(basedir, 'colmap_output.txt')
     logfile = open(logfile_name, 'w')
@@ -29,7 +30,7 @@ def recon(basedir, match_type, run_until=6):
         '--database_path', os.path.join(basedir, 'database.db'),
         '--image_path', os.path.join(basedir, 'images'),
         '--ImageReader.single_camera', '1',
-        '--SiftExtraction.use_gpu', '0',
+        '--SiftExtraction.use_gpu', use_gpu,
     ]
     feat_output = (subprocess.check_output(
         feature_extractor_args, universal_newlines=True))
@@ -40,7 +41,7 @@ def recon(basedir, match_type, run_until=6):
         exhaustive_matcher_args = [
             'colmap', match_type,
             '--database_path', os.path.join(basedir, 'database.db'),
-            '--SiftMatching.use_gpu', '0'
+            '--SiftMatching.use_gpu', use_gpu
         ]
 
         match_output = (subprocess.check_output(
