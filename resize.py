@@ -1,37 +1,33 @@
 from llff.poses.pose_utils import minify
 import os
-import subprocess
+from subprocess import check_output
 
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--basedir', type=str,
-                    help='base directory. should contain an images folder. \
-                    resized images will be put into basedir/images_\{factor\}')
+                    help='base directory. resized images will be put into basedir_\{factor\}')
 parser.add_argument('--factors', type=str,
                     help='resize factor separated by comma. e.g. 2,4,8')
 args = parser.parse_args()
 
 
 def resize(basedir, factors):
-    # factors = args.factors.split(',')
+    factors = [int(x) for x in args.factors.split(',')]
 
-    # def copy():
+    for f in factors:
+        outdir = '{}_{}'.format(os.path.basename(basedir), f)
+        resizearg = '{}%'.format(int(100./f))
 
-    # def resize_helper(factor):
-    #     resize_args = [
-    #         "pushd", f"{basedir}/images_{factor}",
-    #         "ls", "|", ""
-    #     ]
-    #     resize_outputs = (subprocess.check_output(
-    #         resize_args, universal_newlines=True))
-    #     print(resize_outputs)
+        check_output('cp {}/* {}'.format(basedir, outdir), shell=True)
 
-    resize_args = [
-        "bash", "resize.sh", basedir
-    ]
-    resize_outputs = (subprocess.check_output(
-        resize_args, universal_newlines=True))
-    print(resize_outputs)
+        ext = os.listdir(basedir)[0].split('.')[-1]
+        args = ' '.join(['mogrify', '-resize', resizearg,
+                         '-format', 'png', '*.{}'.format(ext)])
+        print(args)
+        wd = os.getcwd()
+        os.chdir(basedir)
+        check_output(args, shell=True)
+        os.chdir(wd)
 
 
 if __name__ == '__main__':

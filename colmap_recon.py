@@ -1,25 +1,21 @@
 import os
 import subprocess
 
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('--basedir', type=str,
+                    help='base directory')
+parser.add_argument('--match_type', type=str,
+                    default='exhaustive_matcher', help='type of matcher used.  Valid options: \
+					exhaustive_matcher sequential_matcher.  Other matchers not supported at this time')
+parser.add_argument('--run_until', type=int, default=3,
+                    help='1 for feature extractor, 2 for matcher, \
+                        3 for sparse mapper, 4 for undistorter, 5 for patch matcher, \
+                        6 for fusion, 7 for poisson mesher, 8 for delaunay mesher')
+args = parser.parse_args()
 
-# $ DATASET_PATH=/path/to/dataset
 
-# $ colmap feature_extractor \
-#    --database_path $DATASET_PATH/database.db \
-#    --image_path $DATASET_PATH/images
-
-# $ colmap exhaustive_matcher \
-#    --database_path $DATASET_PATH/database.db
-
-# $ mkdir $DATASET_PATH/sparse
-
-# $ colmap mapper \
-#     --database_path $DATASET_PATH/database.db \
-#     --image_path $DATASET_PATH/images \
-#     --output_path $DATASET_PATH/sparse
-
-# $ mkdir $DATASET_PATH/dense
-def run_colmap(basedir, match_type, run_until=6):
+def recon(basedir, match_type, run_until=6):
     '''
     run_until specifies where to stop colmap at. 1 for feature extractor, 2 for matcher,
     3 for sparse mapper, 4 for undistorter, 5 for patch matcher, 6 for fusion, 7 for poisson mesher, 
@@ -148,3 +144,7 @@ def run_colmap(basedir, match_type, run_until=6):
 
     logfile.close()
     print('Finished running COLMAP, see {} for logs'.format(logfile_name))
+
+
+if __name__ == '__main__':
+    recon(args.basedir, args.match_type, args.run_until)
