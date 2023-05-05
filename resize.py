@@ -5,29 +5,29 @@ from pathlib import Path
 
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument('--basedir', type=str,
-                    help='base directory. resized images will be put into basedir_\{factor\}')
+parser.add_argument('--imgdir', type=str,
+                    help='image directory. resized images will be put into same parent directory')
 parser.add_argument('--factors', type=str,
                     help='resize factor separated by comma. e.g. 2,4,8')
 args = parser.parse_args()
 
 
-def resize(basedir, factors):
-    factors = [int(x) for x in args.factors.split(',')]
+def resize(imgdir, factors):
+    factors = [int(x) for x in factors.split(',')]
 
-    parentdir = Path(basedir).parent.absolute()
+    parentdir = Path(imgdir).parent.absolute()
     os.chdir(parentdir)
     print('changing cwd to:', parentdir)
 
     for f in factors:
-        outdir = '{}_{}'.format(os.path.basename(basedir), f)  # masks_2
+        outdir = '{}_{}'.format(os.path.basename(imgdir), f)  # masks_2
         outdir = os.path.join(parentdir, outdir)  # /dir/.../masks_2
         os.makedirs(outdir, exist_ok=True)
         resizearg = '{}%'.format(int(100./f))  # 50%
 
-        check_output('cp {}/* {}'.format(basedir, outdir), shell=True)
+        check_output('cp {}/* {}'.format(imgdir, outdir), shell=True)
 
-        ext = os.listdir(basedir)[0].split('.')[-1]
+        ext = os.listdir(imgdir)[0].split('.')[-1]
         args = ' '.join(['mogrify', '-resize', resizearg,
                          '-format', 'png', '*.{}'.format(ext)])
         print(args)
@@ -38,4 +38,4 @@ def resize(basedir, factors):
 
 
 if __name__ == '__main__':
-    resize(args.basedir, args.factors)
+    resize(args.imgdir, args.factors)
