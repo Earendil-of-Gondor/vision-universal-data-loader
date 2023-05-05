@@ -20,9 +20,11 @@ def resize(imgdir, factors):
     print('changing cwd to:', parentdir)
 
     for f in factors:
-        outdir = '{}_{}'.format(os.path.basename(imgdir), f)  # masks_2
+        outdir = '{}_{}'.format(os.path.basename(
+            os.path.normpath(imgdir)), f)  # masks_2
         outdir = os.path.join(parentdir, outdir)  # /dir/.../masks_2
         os.makedirs(outdir, exist_ok=True)
+        print('resizing: ', f, 'to ', outdir)
         resizearg = '{}%'.format(int(100./f))  # 50%
 
         check_output('cp {}/* {}'.format(imgdir, outdir), shell=True)
