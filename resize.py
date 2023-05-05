@@ -1,6 +1,7 @@
 from llff.poses.pose_utils import minify
 import os
 from subprocess import check_output
+from pathlib import Path
 
 import argparse
 parser = argparse.ArgumentParser()
@@ -14,9 +15,15 @@ args = parser.parse_args()
 def resize(basedir, factors):
     factors = [int(x) for x in args.factors.split(',')]
 
+    parentdir = Path(basedir).parent.absolute()
+    os.chdir(parentdir)
+    print('changing cwd to:', parentdir)
+
     for f in factors:
-        outdir = '{}_{}'.format(os.path.basename(basedir), f)
-        resizearg = '{}%'.format(int(100./f))
+        outdir = '{}_{}'.format(os.path.basename(basedir), f)  # masks_2
+        outdir = os.path.join(parentdir, outdir)  # /dir/.../masks_2
+        os.makedirs(outdir, exist_ok=True)
+        resizearg = '{}%'.format(int(100./f))  # 50%
 
         check_output('cp {}/* {}'.format(basedir, outdir), shell=True)
 
@@ -25,7 +32,7 @@ def resize(basedir, factors):
                          '-format', 'png', '*.{}'.format(ext)])
         print(args)
         wd = os.getcwd()
-        os.chdir(basedir)
+        os.chdir(outdir)
         check_output(args, shell=True)
         os.chdir(wd)
 

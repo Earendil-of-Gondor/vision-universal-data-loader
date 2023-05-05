@@ -53,41 +53,41 @@ def recon(basedir, match_type, run_until=6):
         if not os.path.exists(p):
             os.makedirs(p)
 
-        mapper_args = [
-            'colmap', 'mapper',
-            '--database_path', os.path.join(basedir, 'database.db'),
-            '--image_path', os.path.join(basedir, 'images'),
-            # --export_path changed to --output_path in colmap 3.6
-            '--output_path', os.path.join(basedir, 'sparse'),
-            '--Mapper.num_threads', '16',
-            '--Mapper.init_min_tri_angle', '4',
-            '--Mapper.multiple_models', '0',
-            '--Mapper.extract_colors', '0',
-        ]
+            mapper_args = [
+                'colmap', 'mapper',
+                '--database_path', os.path.join(basedir, 'database.db'),
+                '--image_path', os.path.join(basedir, 'images'),
+                # --export_path changed to --output_path in colmap 3.6
+                '--output_path', os.path.join(basedir, 'sparse'),
+                '--Mapper.num_threads', '16',
+                '--Mapper.init_min_tri_angle', '4',
+                '--Mapper.multiple_models', '0',
+                '--Mapper.extract_colors', '0',
+            ]
 
-        map_output = (subprocess.check_output(
-            mapper_args, universal_newlines=True))
-        logfile.write(map_output)
-        print('Sparse map created')
+            map_output = (subprocess.check_output(
+                mapper_args, universal_newlines=True))
+            logfile.write(map_output)
+            print('Sparse map created')
 
     if run_until >= 4:
         p = os.path.join(basedir, 'dense')
         if not os.path.exists(p):
             os.makedirs(p)
 
-        undistorter_args = [
-            'colmap', 'image_undistorter',
-            '--input_path', os.path.join(basedir, 'sparse', '0'),
-            '--image_path', os.path.join(basedir, 'images'),
-            '--output_path', os.path.join(basedir, 'dense'),
-            '--output_type', 'COLMAP',
-            '--max_image_size', '2000',
-        ]
+            undistorter_args = [
+                'colmap', 'image_undistorter',
+                '--input_path', os.path.join(basedir, 'sparse', '0'),
+                '--image_path', os.path.join(basedir, 'images'),
+                '--output_path', os.path.join(basedir, 'dense'),
+                '--output_type', 'COLMAP',
+                '--max_image_size', '2000',
+            ]
 
-        undistorter_output = (subprocess.check_output(
-            undistorter_args, universal_newlines=True))
-        logfile.write(undistorter_output)
-        print('Undistorted images created')
+            undistorter_output = (subprocess.check_output(
+                undistorter_args, universal_newlines=True))
+            logfile.write(undistorter_output)
+            print('Undistorted images created')
 
     if run_until >= 5:
         stereo_matcher_args = [
